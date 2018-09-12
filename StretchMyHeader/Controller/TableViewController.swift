@@ -9,6 +9,7 @@
 import UIKit
 
 private let kTableHeaderHeight: CGFloat = 300.0
+private let kTableHeaderCutAway: CGFloat = 90.0
 
 class TableViewController: UITableViewController {
     
@@ -17,12 +18,9 @@ class TableViewController: UITableViewController {
     // MARK: Properties
     
     @IBOutlet weak var dateUILabel: UILabel!
-    
-    
-    
-    
     var headerView: UIView!
     var newsArray = [News]()
+    var headerMaskLayer: CAShapeLayer!
     override var prefersStatusBarHidden: Bool {
             return true
         }
@@ -50,28 +48,48 @@ class TableViewController: UITableViewController {
         newsArray.append(newsItem4)
         newsArray.append(newsItem5)
         
-        //setup the automatic row height
+        //Setup the automatic row height
+        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = UITableViewAutomaticDimension
         
-  //MARK: Custom Header Setup
+        //MARK: Custom Header Setup
         
         headerView = tableView.tableHeaderView
         tableView.tableHeaderView = nil
         tableView.addSubview(headerView)
         tableView.contentInset = UIEdgeInsets(top: kTableHeaderHeight, left: 0, bottom: 0, right: 0)
         tableView.contentOffset = CGPoint(x: 0, y: -kTableHeaderHeight)
+        //updateHeaderView()
+        
+        //Setup the cut away
+        
+        headerMaskLayer = CAShapeLayer()
+        headerMaskLayer.fillColor = UIColor.black.cgColor
+        headerView.layer.mask = headerMaskLayer
         updateHeaderView()
-
+        
+        //Move up the TableView
+        
+        let effectiveHeight = kTableHeaderHeight-kTableHeaderCutAway/2
+        tableView.contentInset = UIEdgeInsets(top: effectiveHeight, left: 0, bottom: 0, right: 0)
+        tableView.contentOffset = CGPoint(x: 0, y: -effectiveHeight)
     }
 
     func updateHeaderView(){
-        var headerRect = CGRect(x: 0, y: -kTableHeaderHeight, width: tableView.bounds.width, height: kTableHeaderHeight )
-        if tableView.contentOffset.y < kTableHeaderHeight {
+        let effectiveHeight = kTableHeaderHeight-kTableHeaderCutAway/2
+         var headerRect = CGRect(x: 0, y: -effectiveHeight, width: tableView.bounds.width, height: kTableHeaderHeight)
+        if tableView.contentOffset.y < -effectiveHeight {
             headerRect.origin.y = tableView.contentOffset.y
-            headerRect.size.height = -tableView.contentOffset.y
+            headerRect.size.height = -tableView.contentOffset.y + kTableHeaderCutAway/2
         }
         headerView.frame = headerRect
+        let path =  UIBezierPath()
+        path.move(to: CGPoint(x: 0, y: 0))
+        path.addLine(to: CGPoint(x: headerRect.width, y: 0))
+        path.addLine(to: CGPoint(x: headerRect.width, y: headerRect.height))
+        path.addLine(to: CGPoint(x: 0, y: headerRect.height-kTableHeaderCutAway))
+        headerMaskLayer?.path = path.cgPath
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {

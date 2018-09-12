@@ -8,12 +8,20 @@
 
 import UIKit
 
+private let kTableHeaderHeight: CGFloat = 300.0
+
 class TableViewController: UITableViewController {
     
 
   
     // MARK: Properties
     
+    @IBOutlet weak var dateUILabel: UILabel!
+    
+    
+    
+    
+    var headerView: UIView!
     var newsArray = [News]()
     override var prefersStatusBarHidden: Bool {
             return true
@@ -22,6 +30,13 @@ class TableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // set the date label
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd"
+        let today = Date()
+        self.dateUILabel.text = dateFormatter.string(from: today)
+        
         
         //setup the sample data array
         let newsItem1 = News(category: .world, headline: "Climate change protests, divestments meet fossil fuels realities")
@@ -39,8 +54,30 @@ class TableViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = UITableViewAutomaticDimension
         
+  //MARK: Custom Header Setup
+        
+        headerView = tableView.tableHeaderView
+        tableView.tableHeaderView = nil
+        tableView.addSubview(headerView)
+        tableView.contentInset = UIEdgeInsets(top: kTableHeaderHeight, left: 0, bottom: 0, right: 0)
+        tableView.contentOffset = CGPoint(x: 0, y: -kTableHeaderHeight)
+        updateHeaderView()
+
     }
 
+    func updateHeaderView(){
+        var headerRect = CGRect(x: 0, y: -kTableHeaderHeight, width: tableView.bounds.width, height: kTableHeaderHeight )
+        if tableView.contentOffset.y < kTableHeaderHeight {
+            headerRect.origin.y = tableView.contentOffset.y
+            headerRect.size.height = -tableView.contentOffset.y
+        }
+        headerView.frame = headerRect
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateHeaderView()
+    }
+    
     // MARK: TableView Setup
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

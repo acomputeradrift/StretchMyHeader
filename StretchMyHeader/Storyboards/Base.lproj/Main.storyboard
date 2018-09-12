@@ -18,10 +18,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <imageView key="tableHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-header" id="0K2-8R-T1n">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="djw-Eb-cQK">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-header" translatesAutoresizingMaskIntoConstraints="NO" id="no5-is-EM1">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5h-J0-m29">
+                                    <rect key="frame" x="20" y="20" width="53" height="29"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="g5h-J0-m29" firstAttribute="leading" secondItem="djw-Eb-cQK" secondAttribute="leading" constant="20" id="2KR-jx-xlF"/>
+                                <constraint firstItem="no5-is-EM1" firstAttribute="top" secondItem="djw-Eb-cQK" secondAttribute="top" id="STv-fm-Jrg"/>
+                                <constraint firstAttribute="bottom" secondItem="no5-is-EM1" secondAttribute="bottom" id="bUt-Pw-btm"/>
+                                <constraint firstItem="g5h-J0-m29" firstAttribute="top" secondItem="djw-Eb-cQK" secondAttribute="top" constant="20" id="bUu-Xc-ECw"/>
+                                <constraint firstAttribute="trailing" secondItem="no5-is-EM1" secondAttribute="trailing" id="kNd-u0-kiM"/>
+                                <constraint firstItem="no5-is-EM1" firstAttribute="leading" secondItem="djw-Eb-cQK" secondAttribute="leading" id="uBQ-wW-wTy"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableViewCell" rowHeight="80" id="LDP-kC-BFf" userLabel="NewsTable View Cell" customClass="NewsTableViewCell" customModule="StretchMyHeader" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="328" width="375" height="80"/>
@@ -75,6 +95,9 @@
                             <outlet property="delegate" destination="kts-vH-wf9" id="vyK-H0-ELz"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="dateUILabel" destination="g5h-J0-m29" id="okR-AH-ZlG"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-cQ-tJE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -82,6 +105,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bg-header" width="1242" height="825"/>
+        <image name="bg-header" width="621" height="412"/>
     </resources>
 </document>
